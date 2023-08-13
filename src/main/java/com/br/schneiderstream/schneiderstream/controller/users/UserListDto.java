@@ -1,6 +1,7 @@
 package com.br.schneiderstream.schneiderstream.controller.users;
 
 public record UserListDto (
+        int id,
         String nome,
         int idade,
         String email,
@@ -13,7 +14,7 @@ public record UserListDto (
 
 
     public UserListDto(User user){
-        this(user.getNome(), user.getIdade(), user.getEmail(), user.getScore(), user.getTitle(), user.getFoto(), user.getCargo(), user.getCargo());
+        this(user.getId(), user.getNome(), user.getIdade(), user.getEmail(), user.getScore(), user.getTitle(), user.getFoto(), user.getCargo(), user.getCargo());
     }
 
 }
