@@ -3,13 +3,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-
+import org.springframework.data.domain.Pageable;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
@@ -23,7 +21,9 @@ public class UserContoller {
 
     @GetMapping
     public Page<UserListDto> listar( @PageableDefault(size = 10, sort = {"nome"}) Pageable p) {
-        return repository.findAll(p).map(UserListDto::new);
+        Page<UserListDto> page = repository.findAll(p).map(UserListDto::new);
+        System.out.println(page);
+        return page;
     }
 
     @Transactional
@@ -31,12 +31,5 @@ public class UserContoller {
     public void cadastro( @RequestBody @Valid UserDto json){
         repository.save(new User(json));
     }
-
-    // @PutMapping
-    // @Transactional
-    // public void editar(@RequestBody @Valid UserEditDto){
-      
-        
-    // }
     
 }
