@@ -1,4 +1,4 @@
-package com.br.schneiderstream.schneiderstream.controller.postagens.PostagemLike;
+package com.br.schneiderstream.schneiderstream.controller.postagemLike;
 
 import jakarta.validation.constraints.NotNull;
 

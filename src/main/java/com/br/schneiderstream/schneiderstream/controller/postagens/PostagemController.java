@@ -23,9 +23,9 @@ public class PostagemController {
     private UserRepository userRepository;
 
     @GetMapping
-    public Page<PostagemDto> listar(@PageableDefault Pageable p) {
+    public Page<PostagemListDto> listar(@PageableDefault Pageable p) {
         System.out.println("Works!");  
-        Page<PostagemDto> page = repository.findAll(p).map(PostagemDto::new);
+        Page<PostagemListDto> page = repository.findAll(p).map(PostagemListDto::new);
         return page;
     }
 
