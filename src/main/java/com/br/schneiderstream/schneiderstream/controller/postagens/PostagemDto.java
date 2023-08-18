@@ -6,12 +6,12 @@ public record PostagemDto(
         @NotBlank String titulo,
         @NotBlank String userId,
         @NotBlank String conteudo,
-        String imagem
+        String imagemId
         
         ) {
     public PostagemDto(
         Postagem postagem
     ) {
-        this(postagem.getConteudo(), postagem.getUserId(), postagem.getConteudo(), postagem.getImagem());
+        this(postagem.getConteudo(), postagem.getUserId(), postagem.getConteudo(), postagem.getImagemId());
     }
 }

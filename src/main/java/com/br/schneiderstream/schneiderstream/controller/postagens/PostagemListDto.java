@@ -11,6 +11,6 @@ public record PostagemListDto(
         String imagem) {
 
             public PostagemListDto(Postagem postagem){
-                this(postagem.getId(), postagem.getTitulo(), postagem.getUserId(), postagem.getConteudo(), postagem.getImagem());
+                this(postagem.getId(), postagem.getTitulo(), postagem.getUserId(), postagem.getConteudo(), postagem.getImagemId());
             }
 }

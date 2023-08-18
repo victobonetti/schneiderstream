@@ -1,0 +1,6 @@
+CREATE TABLE images (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    alt TEXT NOT NULL,
+    url TEXT NOT NULL
+)
+

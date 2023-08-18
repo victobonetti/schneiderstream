@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Table(name = "postagens")
 @Entity
@@ -17,7 +16,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-@Setter
 public class Postagem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,12 +23,12 @@ public class Postagem {
     private String titulo;
     private String userId;
     private String conteudo;
-    private String imagem;
+    private String imagemId;
 
     public Postagem(PostagemDto json){
         this.titulo = json.titulo();
         this.userId = json.userId();
         this.conteudo = json.conteudo();
-        this.imagem = json.imagem();
+        this.imagemId = json.imagemId();
     }
 }
