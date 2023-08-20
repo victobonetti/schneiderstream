@@ -21,14 +21,12 @@ public class Postagem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String titulo;
-    private String userId;
+    private int userId;
     private String conteudo;
-    private String imagemId;
 
     public Postagem(PostagemDto json){
         this.titulo = json.titulo();
         this.userId = json.userId();
         this.conteudo = json.conteudo();
-        this.imagemId = json.imagemId();
     }
 }

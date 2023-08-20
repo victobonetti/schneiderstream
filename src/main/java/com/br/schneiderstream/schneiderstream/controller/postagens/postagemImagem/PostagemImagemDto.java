@@ -1,9 +1,12 @@
 package com.br.schneiderstream.schneiderstream.controller.postagens.postagemImagem;
+
 public record PostagemImagemDto(
     String alt,
-    String url
+    String url,
+    Integer postId
 ) {
     public PostagemImagemDto(PostagemImagem postagemImagem){
-        this(postagemImagem.getAlt(),postagemImagem.getUrl());
+        this(postagemImagem.getAlt(),postagemImagem.getUrl(), postagemImagem.getPostId());
     }
+
 }

@@ -24,4 +24,8 @@ public record UserDto(
         String descricao,
         String cargo
         ) {
+
+    public UserDto(User user) {
+        this(user.getNome(), user.getIdade(), user.getEmail(), user.getSenha(), user.getScore(), user.getTitle(), user.getFoto(), user.getDescricao(), user.getCargo());
+    }
 }

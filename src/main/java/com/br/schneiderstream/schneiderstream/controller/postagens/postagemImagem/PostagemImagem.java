@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Table(name = "imagem")
+@Table(name = "postagem_imagem")
 @Entity
 @EqualsAndHashCode(of = "id")
 @AllArgsConstructor
@@ -19,14 +19,15 @@ import lombok.NoArgsConstructor;
 public class PostagemImagem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private int id;
     private String url;
     private String alt;
+    private Integer postId;
 
-    public PostagemImagem(PostagemImagemDto postagemImagem){
-        this.url = postagemImagem.url();
-        this.alt = postagemImagem.alt();
+    public PostagemImagem(PostagemImagemDto imagem, int postId){
+        this.url = imagem.url();
+        this.alt = imagem.alt();
+        this.postId = postId;
     }
-
 
 }

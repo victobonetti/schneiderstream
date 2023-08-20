@@ -1,4 +1,6 @@
 package com.br.schneiderstream.schneiderstream.controller.postagens;
+import com.br.schneiderstream.schneiderstream.controller.postagens.postagemImagem.PostagemImagemDto;
+import com.br.schneiderstream.schneiderstream.controller.users.UserListDto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -6,11 +8,12 @@ import jakarta.validation.constraints.NotNull;
 public record PostagemListDto(
         @NotNull int id,
         @NotBlank String titulo,
-        @NotBlank String userId,
         @NotBlank String conteudo,
-        String imagem) {
+        PostagemImagemDto imagem, //external
+        @NotBlank UserListDto user //external
+        ) {
 
-            public PostagemListDto(Postagem postagem){
-                this(postagem.getId(), postagem.getTitulo(), postagem.getUserId(), postagem.getConteudo(), postagem.getImagemId());
+            public PostagemListDto(Postagem postagem, PostagemImagemDto imagem, UserListDto user){
+                this(postagem.getId(), postagem.getTitulo(), postagem.getConteudo(), imagem, user);
             }
 }

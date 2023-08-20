@@ -8,4 +8,6 @@ public interface PostagemLikeRepository extends JpaRepository<PostagemLike, Inte
     List<PostagemLike> findAllByPostagemId(int postagemId);
 
     boolean existsByPostagemIdAndUserId(int postagemId, int userId);
+
+    void deleteByUserId(int userId);
 }
