@@ -36,7 +36,7 @@ public class PostagemController {
     public Page<PostagemListDto> listar(@PageableDefault Pageable p) {
         Page<PostagemListDto> page = repository.findAll(p).map(postagem -> {
             // encontrar imagem da postagem
-            PostagemImagem imagem = imageRepository.findByPostId(postagem.getUserId()).orElse(null);
+            PostagemImagem imagem = imageRepository.findByPostId(postagem.getId()).orElse(null);
             // encontrar usuário autor da postagem
             User user = userRepository.findById(postagem.getUserId()).orElse(null);
 
@@ -68,9 +68,12 @@ public class PostagemController {
             Postagem savedPostagem = repository.save(postagem); // Salva a postagem e obtém a instância salva com o ID
 
             if (data.imagem() != null) {
-                PostagemImagem imagem = new PostagemImagem(data.imagem(), savedPostagem.getId());
-                imageRepository.save(imagem);
+                if (data.imagem().url() != null && data.imagem().alt() != null) {
+                    PostagemImagem imagem = new PostagemImagem(data.imagem(), savedPostagem.getId());
+                    imageRepository.save(imagem);
+                }
             }
+
         } else {
             throw new NotFoundException("ID de usuário inválido");
         }
