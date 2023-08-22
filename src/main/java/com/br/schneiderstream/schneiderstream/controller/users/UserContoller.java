@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.domain.Pageable;
@@ -26,10 +27,16 @@ public class UserContoller {
         return page;
     }
 
+    @GetMapping("/find")
+    public User encontraUsuario(@RequestParam int id){
+        return repository.findById(id).orElse(null);
+    }
+
     @Transactional
     @PostMapping
-    public void cadastro( @RequestBody @Valid UserDto json){
-        repository.save(new User(json));
+    public int cadastro( @RequestBody @Valid UserDto json){
+        User newUser = repository.save(new User(json));
+        return newUser.getId();
     }
     
 }
