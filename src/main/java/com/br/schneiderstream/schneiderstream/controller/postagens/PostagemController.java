@@ -8,13 +8,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.br.schneiderstream.schneiderstream.controller.Id;
 import com.br.schneiderstream.schneiderstream.controller.postagens.postagemImagem.PostagemImagem;
 import com.br.schneiderstream.schneiderstream.controller.postagens.postagemImagem.PostagemImagemDto;
 import com.br.schneiderstream.schneiderstream.controller.postagens.postagemImagem.PostagemImagemRepository;
 import com.br.schneiderstream.schneiderstream.controller.users.User;
 import com.br.schneiderstream.schneiderstream.controller.users.UserListDto;
 import com.br.schneiderstream.schneiderstream.controller.users.UserRepository;
+import com.br.schneiderstream.schneiderstream.exceptions.BadRequestException;
 import com.br.schneiderstream.schneiderstream.exceptions.NotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -58,26 +62,43 @@ public class PostagemController {
 
     @PostMapping
     @Transactional
-    public void criar(@RequestBody @Valid PostagemCreateDto data) {
+    public Id criar(@RequestBody @Valid PostagemCreateDto data) {
 
         int userId = data.postagem().userId();
+
         boolean userExists = userRepository.existsById(userId);
-
-        if (userExists) {
-            Postagem postagem = new Postagem(data.postagem());
-            Postagem savedPostagem = repository.save(postagem); // Salva a postagem e obtém a instância salva com o ID
-
-            if (data.imagem() != null) {
-                if (data.imagem().url() != null && data.imagem().alt() != null) {
-                    PostagemImagem imagem = new PostagemImagem(data.imagem(), savedPostagem.getId());
-                    imageRepository.save(imagem);
-                }
-            }
-
-        } else {
+        if (!userExists) {
             throw new NotFoundException("ID de usuário inválido");
         }
 
+        boolean imagemPropriedadesNotNull = data.imagem() != null;
+        if (!imagemPropriedadesNotNull) {
+            throw new BadRequestException("Atributo 'imagem' é nulo.");
+        }
+
+        boolean imagemAtributosValidos = (data.imagem().url() != null && data.imagem().alt() != null);
+        if (!imagemAtributosValidos) {
+            throw new BadRequestException("Dados do atributo 'imagem' inválidos.");
+
+        }
+
+        Postagem postagem = new Postagem(data.postagem());
+
+        Postagem savedPostagem = repository.save(postagem); // Salva a postagem e obtém a instância salva com o ID
+
+        PostagemImagem imagem = new PostagemImagem(data.imagem(), savedPostagem.getId());
+
+        imageRepository.save(imagem);
+
+        return new Id(savedPostagem.getId());
     }
 
+    @GetMapping("/find")
+    public Postagem encontrarPorId(@RequestParam int id) {
+        Postagem postagem = repository.findById(id).orElse(null);
+        if (postagem == null) {
+            throw new NotFoundException("Id de postagem inválido.");
+        }
+        return postagem;
+    }
 }

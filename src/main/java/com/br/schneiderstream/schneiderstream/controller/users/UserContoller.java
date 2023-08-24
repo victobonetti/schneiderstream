@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.br.schneiderstream.schneiderstream.controller.Id;
+import com.br.schneiderstream.schneiderstream.exceptions.NotFoundException;
+
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.domain.Pageable;
 import jakarta.transaction.Transactional;
@@ -29,14 +33,18 @@ public class UserContoller {
 
     @GetMapping("/find")
     public User encontraUsuario(@RequestParam int id){
-        return repository.findById(id).orElse(null);
+        User user = repository.findById(id).orElse(null);
+        if(user == null){
+            throw new NotFoundException("Id de usuário inválido.");
+        }
+        return user;
     }
 
     @Transactional
     @PostMapping
-    public int cadastro( @RequestBody @Valid UserDto json){
+    public Id cadastro( @RequestBody @Valid UserDto json){
         User newUser = repository.save(new User(json));
-        return newUser.getId();
+        return new Id(newUser.getId());
     }
     
 }

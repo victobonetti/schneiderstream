@@ -1,5 +1,10 @@
 
 package com.br.schneiderstream.schneiderstream.controller.postagens.postagemLike;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,7 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.br.schneiderstream.schneiderstream.controller.postagens.PostagemRepository;
+import com.br.schneiderstream.schneiderstream.controller.users.User;
+import com.br.schneiderstream.schneiderstream.controller.users.UserDto;
 import com.br.schneiderstream.schneiderstream.controller.users.UserRepository;
+import com.br.schneiderstream.schneiderstream.exceptions.BadRequestException;
 import com.br.schneiderstream.schneiderstream.exceptions.NotFoundException;
 import jakarta.transaction.Transactional;
 
@@ -21,15 +29,28 @@ public class PostagemLikeController {
     private UserRepository userRepository;
 
     @Autowired
-    private PostagemLikeRepository repository; 
+    private PostagemLikeRepository repository;
 
     @Autowired
     private PostagemRepository postagemRepository;
 
-
     @GetMapping
-    public int getLikesFromPost(@RequestParam(name = "id") int postid) {
-        return repository.findAllByPostagemId(postid).size();
+    public PostagemLikeListDto getLikesFromPost(@RequestParam(name = "id") int postid) {
+        List<PostagemLike> likes = repository.findAllByPostagemId(postid);
+        int length = likes.size();
+        List<UserDto> usersThatLikedList = new ArrayList<>(); // Inicializa a lista vazia
+
+        likes.forEach(likeInfo -> {
+            Optional<User> userOptional = userRepository.findById(likeInfo.getUserId());
+
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                UserDto userDto = new UserDto(user);
+                usersThatLikedList.add(userDto);
+            }
+        });
+
+        return new PostagemLikeListDto(usersThatLikedList, postid, length);
     }
 
     @PostMapping
@@ -55,6 +76,7 @@ public class PostagemLikeController {
         }
     }
 
+    @Transactional
     @DeleteMapping
     public void removerLike(@RequestParam int userId, @RequestParam int postId) {
 
@@ -67,13 +89,13 @@ public class PostagemLikeController {
                 if (userLiked) {
                     repository.deleteByUserId(userId);
                 } else {
-                    throw new NotFoundException("Usuário não curtiu o post.");
+                    throw new BadRequestException("Usuário não curtiu o post.");
                 }
             } else {
-                throw new NotFoundException("ID de post inválido.");
+                throw new NotFoundException("ID de post não existe.");
             }
         } else {
-            throw new NotFoundException("ID de usuário inválido.");
+            throw new NotFoundException("ID de usuário não existe.");
         }
     }
 
