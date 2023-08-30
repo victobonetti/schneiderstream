@@ -1,6 +1,8 @@
 pipeline {
     agent any
-
+    environment {
+        MAVEN_HOME = 'C:/Users/victor/apache-maven-3.9.4-bin/apache-maven-3.9.4'
+    }
     stages {
         stage('Start') {
             steps {
@@ -11,7 +13,7 @@ pipeline {
             steps {
                 script {
                     dir("${WORKSPACE}/schneiderstream") {
-                        bat "mvn test"
+                        bat 'mvn test'
                     }
                 }
             }
@@ -20,7 +22,7 @@ pipeline {
             steps {
                 script {
                     dir("${WORKSPACE}/schneiderstream") {
-                        bat "mvn clean install"
+                        bat 'mvn clean install'
                     }
                 }
             }
