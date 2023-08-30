@@ -5,8 +5,8 @@ pipeline {
     // }
     tools { 
       maven 'MAVEN_HOME' 
-      jdk 'JAVA_HOME' 
-      aws 'AWS_HOME'
+      jdk 'JDK_HOME' 
+    //   aws 'AWS_HOME'
     }
     stages {
         stage('Start') {
