@@ -3,9 +3,9 @@ pipeline {
     // environment {
     //     MAVEN_HOME = 'C:/Users/victor/apache-maven-3.9.4-bin/apache-maven-3.9.4/bin/mvn'
     // }
-    tools { 
-      maven 'MAVEN_HOME' 
-      jdk 'JDK_HOME' 
+    tools {
+        maven 'MAVEN_HOME'
+        jdk 'JDK_HOME'
     //   aws 'AWS_HOME'
     }
     stages {
@@ -17,18 +17,14 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    dir("${WORKSPACE}/schneiderstream") {
                         bat 'mvn test'
-                    }
                 }
             }
         }
         stage('Build') {
             steps {
                 script {
-                    dir("${WORKSPACE}/schneiderstream") {
                         bat 'mvn clean install'
-                    }
                 }
             }
         }
