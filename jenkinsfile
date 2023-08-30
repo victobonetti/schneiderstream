@@ -1,7 +1,12 @@
 pipeline {
     agent any
-    environment {
-        MAVEN_HOME = 'C:/Users/victor/apache-maven-3.9.4-bin/apache-maven-3.9.4/bin/mvn'
+    // environment {
+    //     MAVEN_HOME = 'C:/Users/victor/apache-maven-3.9.4-bin/apache-maven-3.9.4/bin/mvn'
+    // }
+    tools { 
+      maven 'MAVEN_HOME' 
+      jdk 'JAVA_HOME' 
+      aws 'AWS_HOME'
     }
     stages {
         stage('Start') {
