@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+
+    stages {
+        stage ('Inicial') {
+            steps {
+                echo 'Iniciando a pipeline'
+            }
+        }
+        stage ('Test') {
+            steps {
+                echo 'Passo 2... Iniciando a pipeline'
+            }
+        }
+         stage ('Build') {
+            steps {
+                echo 'Passo 3... Iniciando a pipeline'
+            }
+        }
+         stage ('Deploy') {
+            steps {
+                echo 'Passo 4... Iniciando a pipeline'
+            }
+        }
+    }
+}

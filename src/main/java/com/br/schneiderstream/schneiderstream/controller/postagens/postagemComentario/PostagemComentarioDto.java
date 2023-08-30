@@ -1,4 +1,4 @@
-package com.br.schneiderstream.schneiderstream.controller.postagens.postagemComentario,
+package com.br.schneiderstream.schneiderstream.controller.postagens.postagemComentario;
 
 public record PostagemComentarioDto(
         String id,
