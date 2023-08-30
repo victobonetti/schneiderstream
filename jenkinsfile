@@ -2,24 +2,34 @@ pipeline {
     agent any
 
     stages {
-        stage ('Start') {
+        stage('Start') {
             steps {
                 echo 'Iniciando a pipeline.'
             }
         }
-        stage ('Test') {
+        stage('Test') {
             steps {
-                & "c:\Users\victor\OneDrive - Fiap-Faculdade de Informática e Administração Paulista\Área de Trabalho\schneiderstream\mvnw.cmd" test -f "c:\Users\victor\OneDrive - Fiap-Faculdade de Informática e Administração Paulista\Área de Trabalho\schneiderstream\pom.xml"
+                script {
+                    dir("${WORKSPACE}/schneiderstream") {
+                        bat "mvnw.cmd test"
+                    }
+                }
             }
         }
-         stage ('Build') {
+        stage('Build') {
             steps {
-                & "c:\Users\victor\OneDrive - Fiap-Faculdade de Informática e Administração Paulista\Área de Trabalho\schneiderstream\mvnw.cmd" package -f "c:\Users\victor\OneDrive - Fiap-Faculdade de Informática e Administração Paulista\Área de Trabalho\schneiderstream\pom.xml"
+                script {
+                    dir("${WORKSPACE}/schneiderstream") {
+                        bat "mvnw.cmd package"
+                    }
+                }
             }
         }
-         stage ('Upload') {
+        stage('Upload') {
             steps {
-                aws s3 cp "C:\Users\victor\OneDrive - Fiap-Faculdade de Informática e Administração Paulista\Área de Trabalho\schneiderstream\target\schneiderstream-0.0.1-SNAPSHOT.jar" s3://schneiderstreambucket/schneiderstream-0.0.1-SNAPSHOT.jar
+                withAWS(credentials: secrets.AWS_USER_ID, region: 'us-east-2') {
+                    bat 'aws s3 cp "target/schneiderstream-0.0.1-SNAPSHOT.jar" s3://schneiderstreambucket/schneiderstream-0.0.1-SNAPSHOT.jar'
+                }
             }
         }
     }
