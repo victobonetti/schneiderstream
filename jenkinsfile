@@ -1,36 +1,40 @@
 pipeline {
     agent any
-    // environment {
-    //     MAVEN_HOME = 'C:/Users/victor/apache-maven-3.9.4-bin/apache-maven-3.9.4/bin/mvn'
-    // }
     tools {
         maven 'MAVEN_HOME'
         jdk 'JDK_HOME'
-    //   aws 'AWS_HOME'
     }
     stages {
         stage('Start') {
             steps {
                 echo 'Iniciando a pipeline.'
+                script {
+                    sh "docker build -t mysql:5.7 -f Dockerfile ."
+                    sh "docker run mysql:5.7"
+                }
             }
         }
         stage('Test') {
             steps {
+                echo 'Realizando testes.'
                 script {
-                        bat 'mvn test'
+                    bat 'mvn test'
                 }
             }
         }
         stage('Build') {
             steps {
+                echo 'Compilando.'
                 script {
-                        bat 'mvn clean install'
+                    bat 'mvn clean install'
                 }
             }
         }
         stage('Upload') {
             steps {
+                echo 'Fazendo upload para a AWS.'
                 withAWS(credentials: $AWS_USERID, region: 'us-east-2') {
+                    /* groovylint-disable-next-line LineLength */
                     bat 'aws s3 cp "target/schneiderstream-0.0.1-SNAPSHOT.jar" s3://schneiderstreambucket/schneiderstream-0.0.1-SNAPSHOT.jar'
                 }
             }
