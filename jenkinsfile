@@ -20,14 +20,14 @@ pipeline {
             steps {
                 script {
                     dir("${WORKSPACE}/schneiderstream") {
-                        bat "mvn package"
+                        bat "mvn clean install"
                     }
                 }
             }
         }
         stage('Upload') {
             steps {
-                withAWS(credentials: secrets.AWS_USER_ID, region: 'us-east-2') {
+                withAWS(credentials: ${AWS_USERID}, region: 'us-east-2') {
                     bat 'aws s3 cp "target/schneiderstream-0.0.1-SNAPSHOT.jar" s3://schneiderstreambucket/schneiderstream-0.0.1-SNAPSHOT.jar'
                 }
             }
