@@ -11,7 +11,7 @@ pipeline {
             steps {
                 script {
                     dir("${WORKSPACE}/schneiderstream") {
-                        bat "mvnw.cmd test"
+                        bat "mvn test"
                     }
                 }
             }
@@ -20,7 +20,7 @@ pipeline {
             steps {
                 script {
                     dir("${WORKSPACE}/schneiderstream") {
-                        bat "mvnw.cmd package"
+                        bat "mvn package"
                     }
                 }
             }
