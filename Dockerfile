@@ -1,16 +1,5 @@
-# # Use uma imagem Ubuntu como base
-# FROM ubuntu
-
-# # Instale as dependências necessárias para o Java e o projeto Spring
-# RUN apt-get update && \
-#     apt-get install -y default-jdk && \
-#     apt-get clean
-
-# # Copie o código-fonte do projeto para o contêiner
-# COPY . /src
-
-# # Defina um diretório de trabalho dentro do contêiner
-# WORKDIR /src
-
-# # Comando de entrada para executar o projeto Spring Boot (ajuste conforme seu projeto)
-# CMD ["./mvnw", "spring-boot:run"]
+# FROM openjdk:17
+# ENV MYSQL_HOST 192.168.92.9
+# RUN "ping 192.168.92.9"
+# COPY ./target/schneiderstream-0.0.1-SNAPSHOT.jar app.jar
+# CMD ["java","-jar","app.jar"]

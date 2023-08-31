@@ -1,4 +1,3 @@
-version: 'latest'
 services:
   db:
     image: mysql
@@ -9,9 +8,21 @@ services:
       MYSQL_DATABASE: SCHNEIDERSTREAM
     ports:
       - 3306:3306
-  # api:
-  #   build: .
-  #   ports: 
-  #     - "3000:3000"
-  #   depends_on:
-  #     - db
+#     networks:
+#       rest:
+#         ipv4_address: 192.168.92.9
+#   web:
+#     ports:
+#       - "8000:8000"
+#     depends_on:
+#       - db
+#     build: .
+#     networks:
+#       rest:
+#         ipv4_address: 192.168.92.10
+# networks:
+#   rest:
+#     ipam:
+#       driver: default
+#       config:
+#         - subnet: "192.168.92.0/24"
