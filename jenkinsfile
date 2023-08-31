@@ -8,14 +8,13 @@ pipeline {
         stage('Start') {
             steps {
                 bat 'docker-compose up -d'
-                bat 'timeout /t 30'
             }
         }
-        stage('Create Tables') {
-            steps {
-                bat 'mvn flyway:migrate'
-            }
-        }
+        // stage('Create Tables') {
+        //     steps {
+        //         bat 'mvn flyway:migrate'
+        //     }
+        // }
         stage('Test') {
             steps {
                 echo 'Realizando testes.'
