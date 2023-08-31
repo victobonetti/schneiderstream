@@ -1,0 +1,17 @@
+version: 'latest'
+services:
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: masterkey
+      MYSQL_DATABASE: SCHNEIDERSTREAM
+    ports:
+      - 3306:3306
+  # api:
+  #   build: .
+  #   ports: 
+  #     - "3000:3000"
+  #   depends_on:
+  #     - db
