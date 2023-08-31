@@ -8,9 +8,9 @@ services:
       MYSQL_DATABASE: SCHNEIDERSTREAM
     ports:
       - 3306:3306
-#     networks:
-#       rest:
-#         ipv4_address: 192.168.92.9
+    networks:
+      rest:
+        ipv4_address: 192.168.92.9
 #   web:
 #     ports:
 #       - "8000:8000"
@@ -20,9 +20,9 @@ services:
 #     networks:
 #       rest:
 #         ipv4_address: 192.168.92.10
-# networks:
-#   rest:
-#     ipam:
-#       driver: default
-#       config:
-#         - subnet: "192.168.92.0/24"
+networks:
+  rest:
+    ipam:
+      driver: default
+      config:
+        - subnet: "192.168.92.0/24"
