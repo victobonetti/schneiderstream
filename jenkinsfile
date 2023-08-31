@@ -11,7 +11,9 @@ pipeline {
             }
         }
         stage('Create Tables') {
-            bat 'mvn flyway:migrate'
+            steps {
+                bat 'mvn flyway:migrate'
+            }
         }
         stage('Test') {
             steps {
