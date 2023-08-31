@@ -7,7 +7,8 @@ pipeline {
     stages {
         stage('Start') {
             steps {
-                bat 'docker-compose up -d'
+                bat 'docker-compose up'
+                bat 'until docker inspect -f '{{.State.Status}}' $containerName | grep -q 'running'; do sleep 1; done'
             }
         }
         stage('Create Tables') {
