@@ -8,7 +8,7 @@ pipeline {
         stage('Start') {
             steps {
                 bat 'docker-compose up -d'
-                bat 'sleep 20'
+                bat 'timeout /t 30'
             }
         }
         stage('Create Tables') {
