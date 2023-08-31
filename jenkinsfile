@@ -34,7 +34,7 @@ pipeline {
         stage('Upload') {
             steps {
                 echo 'Fazendo upload para a AWS.'
-                    bat 'aws s3 cp "target/schneiderstream-0.0.1-SNAPSHOT.jar" s3://schneiderstreambucket/schneiderstream-0.0.1-SNAPSHOT.jar'
+                bat 'aws s3 cp "target/schneiderstream-0.0.1-SNAPSHOT.jar" s3://schneiderstreambucket/schneiderstream-0.0.1-SNAPSHOT.jar'
             }
         }
     }
