@@ -7,10 +7,11 @@ pipeline {
     stages {
         stage('Start') {
             steps {
-                echo 'Iniciando a pipeline.'
                 bat 'docker-compose up -d'
-                bat 'mvn flyway:migrate'
             }
+        }
+        stage('Create Tables') {
+            bat 'mvn flyway:migrate'
         }
         stage('Test') {
             steps {
