@@ -9,6 +9,7 @@ pipeline {
             steps {
                 echo 'Iniciando a pipeline.'
                 bat 'docker-compose up -d'
+                bat 'mvn flyway:migrate'
             }
         }
         stage('Test') {

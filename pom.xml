@@ -63,6 +63,15 @@
 
   <build>
     <plugins>
+     <plugin>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-maven-plugin</artifactId>
+            <configuration>
+                <url>jdbc:mysql://localhost:3306/SCHNEIDERSTREAM</url>
+                <user>root</user>
+                <password>masterkey</password>
+            </configuration>
+        </plugin>
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
