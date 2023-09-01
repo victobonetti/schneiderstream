@@ -6,11 +6,9 @@ services:
     restart: always
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      MYSQL_USER: user
-      MYSQL_PASSWORD: 1234
       MYSQL_ROOT_PASSWORD: masterkey
     ports:
-      - "3306"
+      - 3306:3306
     networks:
       api:
         ipv4_address: 192.168.92.9
@@ -18,13 +16,11 @@ services:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 20s
       retries: 10
-    volumes:
-      -db-data/storage
   web:
     environment:
       - "SPRING_PROFILES_ACTIVE=docker"
     ports:
-      - "9090:9090"
+      - "8081:8081"
     depends_on:
       db:
         condition: "service_healthy"
@@ -40,5 +36,3 @@ networks:
       driver: default
       config:
         - subnet: "192.168.92.0/24"
-volume:
-  db-data:

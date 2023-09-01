@@ -11,6 +11,7 @@ services:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 20s
       retries: 10
+  # Container extra pra esperar build da database
   await:
     image: ubuntu
     depends_on:
