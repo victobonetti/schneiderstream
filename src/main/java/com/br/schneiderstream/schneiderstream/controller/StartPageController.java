@@ -10,7 +10,7 @@ public class StartPageController {
 
     @GetMapping
     public MessageDto sendWelcomeMessage(){
-        return new MessageDto("Olá! Estou na entrevista da Korp.");
+        return new MessageDto("Olá! Isso é uma mensagem de teste.");
     }
 
 }
