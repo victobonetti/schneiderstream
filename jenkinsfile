@@ -6,6 +6,7 @@ pipeline {
     }
     environment {
         MYSQL_HOST = '127.0.0.1'
+        AWS_RDS_HOST = 'database-1.c6mmun20ggl3.us-west-2.rds.amazonaws.com'
     }
     stages {
         stage('Criando containers para teste') {
@@ -24,7 +25,11 @@ pipeline {
         stage('Compilando') {
             steps {
                 echo 'Compilando.'
+                environment {
+                    MYSQL_HOST = AWS_RDS_HOST
+                }
                 script {
+                    echo MYSQL_HOST
                     bat 'mvn clean install'
                 }
             }
