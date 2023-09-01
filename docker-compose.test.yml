@@ -11,3 +11,8 @@ services:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 20s
       retries: 10
+  await:
+    image: ubuntu
+    depends_on:
+      db:
+        condition: "service_healthy"
