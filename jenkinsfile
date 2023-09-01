@@ -26,6 +26,7 @@ pipeline {
             steps {
                 echo 'Compilando.'
                 script {
+                    /* groovylint-disable-next-line NestedBlockDepth */
                     environment {
                         MYSQL_HOST = AWS_RDS_HOST
                     }
@@ -44,6 +45,7 @@ pipeline {
         stage('Upload S3') {
             steps {
                 echo 'Fazendo upload para a AWS.'
+                /* groovylint-disable-next-line LineLength */
                 bat 'aws s3 cp "target/schneiderstream-0.0.1-SNAPSHOT.jar" s3://schneiderstreambucket/schneiderstream-0.0.1-SNAPSHOT.jar'
             }
         }
