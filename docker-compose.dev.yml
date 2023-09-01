@@ -7,8 +7,6 @@ services:
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_ROOT_PASSWORD: masterkey
-    ports:
-      - 3306:3306
     networks:
       api:
         ipv4_address: 192.168.92.9

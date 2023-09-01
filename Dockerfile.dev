@@ -1,7 +1,5 @@
-FROM ubuntu:latest
+FROM openjdk:17-oracle
 
-RUN apt-get update && apt-get install -y openjdk-11-jdk
 HEALTHCHECK --interval=30s --timeout=5s --retries=3 CMD ping -c 3 192.168.92.9
-COPY ./target/schneiderstream-0.0.1-SNAPSHOT.jar /app/schneiderstream-0.0.1-SNAPSHOT.jar
-WORKDIR /app/schneiderstream-0.0.1-SNAPSHOT.jar
+COPY ./target/schneiderstream-0.0.1-SNAPSHOT.jar schneiderstream-0.0.1-SNAPSHOT.jar 
 CMD ["java", "-jar", "schneiderstream-0.0.1-SNAPSHOT.jar"]
