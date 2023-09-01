@@ -25,10 +25,10 @@ pipeline {
         stage('Compilando') {
             steps {
                 echo 'Compilando.'
-                environment {
-                    MYSQL_HOST = AWS_RDS_HOST
-                }
                 script {
+                    environment {
+                        MYSQL_HOST = AWS_RDS_HOST
+                    }
                     echo MYSQL_HOST
                     bat 'mvn clean install'
                 }
@@ -47,11 +47,11 @@ pipeline {
                 bat 'aws s3 cp "target/schneiderstream-0.0.1-SNAPSHOT.jar" s3://schneiderstreambucket/schneiderstream-0.0.1-SNAPSHOT.jar'
             }
         }
-        stage('Iniciando instância EC2') {
-            steps {
-                echo 'Inciando instância EC2.'
-                bat 'echo "teste"'
-            }
-        }
+    // stage('Iniciando instância EC2') {
+    //     steps {
+    //         echo 'Inciando instância EC2.'
+    //         bat 'echo "teste"'
+    //     }
+    // }
     }
 }
