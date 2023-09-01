@@ -9,7 +9,7 @@ pipeline {
     }
     stages {
         stage('Criando ambiente') {
-             echo 'Fazendo docker compose.'
+            echo 'Fazendo docker compose.'
             steps {
                 bat 'docker-compose -f docker-compose.test.yml up '
             }
