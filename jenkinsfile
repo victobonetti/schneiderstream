@@ -6,7 +6,6 @@ pipeline {
     }
     environment {
         S3_BUCKET = 'schneiderstreambucket'
-        JAR_FILE = 'schneiderstream-0.0.1-SNAPSHOT.jar'
     }
     stages {
         stage('Criando ambiente') {
@@ -39,7 +38,7 @@ pipeline {
             steps {
                 echo 'Fazendo upload para a AWS.'
                 script {
-                    bat "aws s3 cp 'target\${JAR_FILE}' s3://${S3_BUCKET}/${JAR_FILE}"
+                    bat "aws s3 cp 'target/schneiderstream-0.0.1-SNAPSHOT.jar' s3://${S3_BUCKET}/schneiderstream-0.0.1-SNAPSHOT"
                 }
             }
         }
