@@ -10,7 +10,7 @@ public class StartPageController {
 
     @GetMapping
     public MessageDto sendWelcomeMessage(){
-        return new MessageDto("Bem vindo à API da SchneiderStream, a rede social sustentável.");
+        return new MessageDto("Olá! Estou na entrevista da Korp.");
     }
 
 }
