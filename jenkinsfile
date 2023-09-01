@@ -39,15 +39,12 @@ pipeline {
             steps {
                 echo 'Fazendo upload para a AWS.'
                 script {
-                    bat "aws s3 cp 'target/${JAR_FILE}' s3://${S3_BUCKET}/${JAR_FILE}"
+                    bat "aws s3 cp 'target\${JAR_FILE}' s3://${S3_BUCKET}/${JAR_FILE}"
                 }
             }
         }
     // stage('Iniciando instância EC2') {
-    //     steps {
-    //         echo 'Inciando instância EC2.'
-    //         bat 'echo "teste"'
-    //     }
+    //  
     // }
     }
 }
