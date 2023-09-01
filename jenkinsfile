@@ -4,9 +4,6 @@ pipeline {
         maven 'MAVEN_HOME'
         jdk 'JDK_HOME'
     }
-    environment {
-        MYSQL_HOST = 'jdbc:mysql://127.0.0.1/SCHNEIDERSTREAM'
-    }
     stages {
         stage('Criando containers para teste') {
             steps {
@@ -17,14 +14,14 @@ pipeline {
             steps {
                 echo 'Realizando testes.'
                 script {
-                    bat 'mvn test'
+                    bat 'mvn test --spring.profiles.active=dev'
                 }
             }
         }
         stage('Compilando') {
             steps {
                 echo 'Compilando:'
-                bat 'mvn clean install'
+                bat 'mvn clean install -DskipTests -Dspring-boot.run.arguments="--spring.profiles.active=prod"'
             }
         }
         stage('Parando containers de teste') {
