@@ -4,18 +4,16 @@ pipeline {
         maven 'MAVEN_HOME'
         jdk 'JDK_HOME'
     }
+    environment {
+        MYSQL_HOST = 'test-database-host'
+    }
     stages {
-        stage('Start') {
+        stage('Criando containers para teste') {
             steps {
                 bat 'docker-compose up -d'
             }
         }
-        // stage('Create Tables') {
-        //     steps {
-        //         bat 'mvn flyway:migrate'
-        //     }
-        // }
-        stage('Test') {
+        stage('Testando') {
             steps {
                 echo 'Realizando testes.'
                 script {
@@ -23,7 +21,7 @@ pipeline {
                 }
             }
         }
-        stage('Build') {
+        stage('Compilando') {
             steps {
                 echo 'Compilando.'
                 script {
@@ -31,10 +29,23 @@ pipeline {
                 }
             }
         }
-        stage('Upload') {
+        stage('Parando containers de teste') {
+            steps {
+                script {
+                    bat 'docker-compose down'
+                }
+            }
+        }
+        stage('Upload S3') {
             steps {
                 echo 'Fazendo upload para a AWS.'
                 bat 'aws s3 cp "target/schneiderstream-0.0.1-SNAPSHOT.jar" s3://schneiderstreambucket/schneiderstream-0.0.1-SNAPSHOT.jar'
+            }
+        }
+        stage('Iniciando instância EC2') {
+            steps {
+                echo 'Inciando instância EC2.'
+                bat 'echo "teste"'
             }
         }
     }
