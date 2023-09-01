@@ -5,7 +5,6 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: masterkey
-      MYSQL_DATABASE: SCHNEIDERSTREAM
     ports:
       - 3306:3306
     # networks:
