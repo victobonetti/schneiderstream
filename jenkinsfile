@@ -14,14 +14,14 @@ pipeline {
             steps {
                 echo 'Realizando testes.'
                 script {
-                    bat 'mvn test --spring.profiles.active=dev'
+                    bat 'mvn test'
                 }
             }
         }
         stage('Compilando') {
             steps {
                 echo 'Compilando:'
-                bat 'mvn clean install -DskipTests -Dspring-boot.run.arguments="--spring.profiles.active=prod"'
+                bat 'mvn clean install -DskipTests'
             }
         }
         stage('Parando containers de teste') {
