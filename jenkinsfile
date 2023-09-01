@@ -5,7 +5,7 @@ pipeline {
         jdk 'JDK_HOME'
     }
     environment {
-        MYSQL_HOST = '127.0.0.1'
+        MYSQL_HOST = 'jdbc:mysql://127.0.0.1/SCHNEIDERSTREAM'
     }
     stages {
         stage('Criando containers para teste') {
