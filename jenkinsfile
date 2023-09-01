@@ -24,11 +24,7 @@ pipeline {
         stage('Compilando') {
             steps {
                 echo 'Compilando:'
-                script {
-                    env.MYSQL_HOST = env.AWS_RDS_HOST
-                    bat 'mvn clean install'
-                }
-                echo env.MYSQL_HOST
+                bat 'mvn clean install'
             }
         }
         stage('Parando containers de teste') {
