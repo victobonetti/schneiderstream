@@ -1,0 +1,4 @@
+Comandos para teste:
+
+mvn clean install -DskipTests
+docker-compose -f docker-compose.dev.yml up -d

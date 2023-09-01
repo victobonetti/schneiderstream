@@ -4,10 +4,14 @@ pipeline {
         maven 'MAVEN_HOME'
         jdk 'JDK_HOME'
     }
+    environment {
+        S3_BUCKET = 'schneiderstreambucket'
+        JAR_FILE = 'schneiderstream-0.0.1-SNAPSHOT.jar'
+    }
     stages {
-        stage('Criando containers para teste') {
+        stage('Criando ambiente') {
             steps {
-                bat 'docker-compose up -d'
+                bat 'docker-compose -f docker-compose.test.yml up -d'
             }
         }
         stage('Testando') {
@@ -24,17 +28,19 @@ pipeline {
                 bat 'mvn clean install -DskipTests'
             }
         }
-        stage('Parando containers de teste') {
+        stage('Finalizando') {
             steps {
                 script {
                     bat 'docker-compose down'
                 }
             }
         }
-        stage('Upload S3') {
+        stage('Deploy') {
             steps {
                 echo 'Fazendo upload para a AWS.'
-                bat 'aws s3 cp "target/schneiderstream-0.0.1-SNAPSHOT.jar" s3://schneiderstreambucket/schneiderstream-0.0.1-SNAPSHOT.jar'
+                script {
+                    bat "aws s3 cp 'target/${JAR_FILE}' s3://${S3_BUCKET}/${JAR_FILE}"
+                }
             }
         }
     // stage('Iniciando instância EC2') {
