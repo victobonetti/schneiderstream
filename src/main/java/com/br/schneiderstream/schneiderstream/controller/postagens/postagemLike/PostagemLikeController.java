@@ -17,8 +17,6 @@ import com.br.schneiderstream.schneiderstream.controller.postagens.PostagemRepos
 import com.br.schneiderstream.schneiderstream.controller.users.User;
 import com.br.schneiderstream.schneiderstream.controller.users.UserDto;
 import com.br.schneiderstream.schneiderstream.controller.users.UserRepository;
-import com.br.schneiderstream.schneiderstream.exceptions.BadRequestException;
-import com.br.schneiderstream.schneiderstream.exceptions.NotFoundException;
 import jakarta.transaction.Transactional;
 
 @RestController
@@ -66,13 +64,13 @@ public class PostagemLikeController {
                 if (userHaventLiked) {
                     repository.save(new PostagemLike(like));
                 } else {
-                    throw new NotFoundException("Usuário já curtiu o post.");
+                    // throw new NotFoundException("Usuário já curtiu o post.");
                 }
             } else {
-                throw new NotFoundException("ID de post inválido.");
+                // throw new NotFoundException("ID de post inválido.");
             }
         } else {
-            throw new NotFoundException("ID de usuário inválido.");
+            // throw new NotFoundException("ID de usuário inválido.");
         }
     }
 
@@ -84,19 +82,6 @@ public class PostagemLikeController {
         boolean userExists = userRepository.existsById(userId);
         boolean userLiked = repository.existsByPostagemIdAndUserId(postId, userId);
 
-        if (userExists) {
-            if (postExists) {
-                if (userLiked) {
-                    repository.deleteByUserId(userId);
-                } else {
-                    throw new BadRequestException("Usuário não curtiu o post.");
-                }
-            } else {
-                throw new NotFoundException("ID de post não existe.");
-            }
-        } else {
-            throw new NotFoundException("ID de usuário não existe.");
-        }
     }
 
 }

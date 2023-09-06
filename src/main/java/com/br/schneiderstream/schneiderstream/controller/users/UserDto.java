@@ -12,6 +12,7 @@ public record UserDto(
         @NotNull 
         int idade,
         @Email(regexp = ".+[@].+[\\.].+")
+        @NotNull
         String email,
         @NotBlank
         String senha,

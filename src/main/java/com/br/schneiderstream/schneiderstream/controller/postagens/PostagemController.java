@@ -18,8 +18,6 @@ import com.br.schneiderstream.schneiderstream.controller.postagens.postagemImage
 import com.br.schneiderstream.schneiderstream.controller.users.User;
 import com.br.schneiderstream.schneiderstream.controller.users.UserListDto;
 import com.br.schneiderstream.schneiderstream.controller.users.UserRepository;
-import com.br.schneiderstream.schneiderstream.exceptions.BadRequestException;
-import com.br.schneiderstream.schneiderstream.exceptions.NotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
@@ -68,18 +66,7 @@ public class PostagemController {
 
         boolean userExists = userRepository.existsById(userId);
         if (!userExists) {
-            throw new NotFoundException("ID de usuário inválido");
-        }
-
-        boolean imagemPropriedadesNotNull = data.imagem() != null;
-        if (!imagemPropriedadesNotNull) {
-            throw new BadRequestException("Atributo 'imagem' é nulo.");
-        }
-
-        boolean imagemAtributosValidos = (data.imagem().url() != null && data.imagem().alt() != null);
-        if (!imagemAtributosValidos) {
-            throw new BadRequestException("Dados do atributo 'imagem' inválidos.");
-
+            // throw new NotFoundException("ID de usuário inválido");
         }
 
         Postagem postagem = new Postagem(data.postagem());
@@ -96,9 +83,6 @@ public class PostagemController {
     @GetMapping("/find")
     public Postagem encontrarPorId(@RequestParam int id) {
         Postagem postagem = repository.findById(id).orElse(null);
-        if (postagem == null) {
-            throw new NotFoundException("Id de postagem inválido.");
-        }
         return postagem;
     }
 }
