@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.br.schneiderstream.schneiderstream.entities.users.classes.User;
+import com.br.schneiderstream.schneiderstream.infra.security.TokenDto;
+import com.br.schneiderstream.schneiderstream.infra.security.TokenService;
+
 import jakarta.validation.Valid;
 
 @RestController
@@ -17,12 +21,16 @@ public class AuthController {
 
     @Autowired
     private AuthenticationManager auth;
+
+     @Autowired
+    TokenService tkn;
     
     @PostMapping
-    public ResponseEntity login(@RequestBody @Valid AuthDto dados){
-        var token = new UsernamePasswordAuthenticationToken(dados.nome(), dados.senha());
+    public ResponseEntity<Object> login(@RequestBody @Valid AuthDto dados){
+        var token = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha());
         var authentication = auth.authenticate(token);
-        return ResponseEntity.ok().build();
+        var tokenJWT = tkn.gerarToken((User) authentication.getPrincipal());
+        return ResponseEntity.ok().body(new TokenDto(tokenJWT));
     }
-
+   
 }

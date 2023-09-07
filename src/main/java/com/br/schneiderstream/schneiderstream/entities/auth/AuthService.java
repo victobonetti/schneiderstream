@@ -1,4 +1,4 @@
-package com.br.schneiderstream.schneiderstream.entities.users.services;
+package com.br.schneiderstream.schneiderstream.entities.auth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,7 +15,7 @@ public class AuthService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return repository.findByNome(username);
+        return repository.findByEmail(username);
     }
 
 }
