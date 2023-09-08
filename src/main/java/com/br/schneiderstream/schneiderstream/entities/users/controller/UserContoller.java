@@ -1,10 +1,8 @@
 package com.br.schneiderstream.schneiderstream.entities.users.controller;
 
-import javax.swing.text.html.Option;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,18 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
-import org.yaml.snakeyaml.events.Event.ID;
-
 import com.br.schneiderstream.schneiderstream.entities.Id;
 import com.br.schneiderstream.schneiderstream.entities.users.classes.User;
 import com.br.schneiderstream.schneiderstream.entities.users.dto.UserDto;
 import com.br.schneiderstream.schneiderstream.entities.users.dto.UserListDto;
 import com.br.schneiderstream.schneiderstream.entities.users.repository.UserRepository;
-import com.br.schneiderstream.schneiderstream.infra.exceptions.CustomExceptionHandler.NotValidDto;
-
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.data.domain.Pageable;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;

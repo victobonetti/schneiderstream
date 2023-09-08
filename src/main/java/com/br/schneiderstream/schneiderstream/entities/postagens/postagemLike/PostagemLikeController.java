@@ -4,21 +4,18 @@ package com.br.schneiderstream.schneiderstream.entities.postagens.postagemLike;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
+// import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.br.schneiderstream.schneiderstream.entities.postagens.repository.PostagemRepository;
 import com.br.schneiderstream.schneiderstream.entities.users.classes.User;
 import com.br.schneiderstream.schneiderstream.entities.users.dto.UserDto;
 import com.br.schneiderstream.schneiderstream.entities.users.repository.UserRepository;
-
 import jakarta.transaction.Transactional;
 
 @RestController
@@ -76,14 +73,14 @@ public class PostagemLikeController {
         }
     }
 
-    @Transactional
-    @DeleteMapping
-    public void removerLike(@RequestParam int userId, @RequestParam int postId) {
+    // @Transactional
+    // @DeleteMapping
+    // public void removerLike(@RequestParam int userId, @RequestParam int postId) {
 
-        boolean postExists = postagemRepository.existsById(postId);
-        boolean userExists = userRepository.existsById(userId);
-        boolean userLiked = repository.existsByPostagemIdAndUserId(postId, userId);
+    //     boolean postExists = postagemRepository.existsById(postId);
+    //     boolean userExists = userRepository.existsById(userId);
+    //     boolean userLiked = repository.existsByPostagemIdAndUserId(postId, userId);
 
-    }
+    // }
 
 }

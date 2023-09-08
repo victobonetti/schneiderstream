@@ -22,15 +22,20 @@ public class AuthController {
     @Autowired
     private AuthenticationManager auth;
 
-     @Autowired
+    @Autowired
     TokenService tkn;
-    
+
     @PostMapping
-    public ResponseEntity<Object> login(@RequestBody @Valid AuthDto dados){
-        var token = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha());
-        var authentication = auth.authenticate(token);
-        var tokenJWT = tkn.gerarToken((User) authentication.getPrincipal());
-        return ResponseEntity.ok().body(new TokenDto(tokenJWT));
+    public ResponseEntity<Object> login(@RequestBody @Valid AuthDto dados) {
+        try {
+            var token = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha());
+            var authentication = auth.authenticate(token);
+            var tokenJWT = tkn.gerarToken((User) authentication.getPrincipal());
+            return ResponseEntity.ok().body(new TokenDto(tokenJWT));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
-   
+
 }
