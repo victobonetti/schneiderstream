@@ -10,9 +10,9 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import com.br.schneiderstream.schneiderstream.entities.Id;
 import com.br.schneiderstream.schneiderstream.entities.postagemImagem.PostagemImagem;
+import com.br.schneiderstream.schneiderstream.entities.postagemLike.PostagemLikeDto;
 import com.br.schneiderstream.schneiderstream.entities.postagens.classes.Postagem;
 import com.br.schneiderstream.schneiderstream.entities.postagens.dto.PostagemCreateDto;
-import com.br.schneiderstream.schneiderstream.entities.postagens.postagemLike.PostagemLikeDto;
 import com.br.schneiderstream.schneiderstream.entities.users.classes.Title;
 import com.br.schneiderstream.schneiderstream.entities.users.classes.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
