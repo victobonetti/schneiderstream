@@ -3,4 +3,4 @@ CREATE TABLE postagemcomentarios (
     user_id INT NOT NULL,
     postagem_id INT NOT NULL,
     conteudo TEXT NOT NULL
-)
+);

@@ -11,7 +11,6 @@ import jakarta.persistence.EntityNotFoundException;
 @RestControllerAdvice
 public class CustomExceptionHandler {
 
-    
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<String> handleNotFoundException() {

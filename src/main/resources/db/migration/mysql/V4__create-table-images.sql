@@ -3,5 +3,5 @@ CREATE TABLE postagem_imagem (
     alt TEXT NOT NULL,
     url TEXT NOT NULL,
     post_id INT NOT NULL
-)
+);
 

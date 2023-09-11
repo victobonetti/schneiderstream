@@ -34,6 +34,7 @@ public class TokenService {
             String token = JWT.create()
                     .withIssuer("SCHNEIDERSTREAM")
                     .withSubject(object.getEmail())
+                    .withClaim("userId", object.getId())
                     .withExpiresAt(expirationDate)
                     .sign(algorithm);
             return token; // Adicione esta linha para retornar o token gerado
