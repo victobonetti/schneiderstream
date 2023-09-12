@@ -27,8 +27,8 @@ public class PostagemComentario {
     private int postagemId;
     private String conteudo;
 
-    public PostagemComentario(PostagemComentarioDto comentario) {
-        this.userId = comentario.userId();
+    public PostagemComentario(PostagemComentarioDto comentario, int id) {
+        this.userId = id;
         this.postagemId = comentario.postagemId();
         this.conteudo = comentario.conteudo();
     }

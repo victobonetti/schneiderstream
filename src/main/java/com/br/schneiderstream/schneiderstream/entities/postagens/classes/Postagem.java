@@ -28,9 +28,9 @@ public class Postagem {
     private int userId;
     private String conteudo;
 
-    public Postagem(PostagemDto json){
+    public Postagem(PostagemDto json, int userId){
         this.titulo = json.titulo();
-        this.userId = json.userId();
+        this.userId = userId;
         this.conteudo = json.conteudo();
     }
 }

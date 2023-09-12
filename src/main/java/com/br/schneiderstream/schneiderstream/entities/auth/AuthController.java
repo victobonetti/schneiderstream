@@ -34,7 +34,7 @@ public class AuthController {
             return ResponseEntity.ok().body(new TokenDto(tokenJWT));
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body("Não foi possível efetuar login.");
         }
     }
 

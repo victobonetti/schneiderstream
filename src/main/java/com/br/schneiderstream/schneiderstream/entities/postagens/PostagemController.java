@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.br.schneiderstream.schneiderstream.entities.ActiveUserService;
 import com.br.schneiderstream.schneiderstream.entities.Id;
 import com.br.schneiderstream.schneiderstream.entities.postagemImagem.PostagemImagem;
 import com.br.schneiderstream.schneiderstream.entities.postagemImagem.PostagemImagemDto;
@@ -38,6 +39,9 @@ public class PostagemController {
 
     @Autowired
     private PostagemImagemRepository imageRepository;
+
+    @Autowired
+    private ActiveUserService userDataService;
 
     @GetMapping
     public Page<PostagemListDto> listar(@PageableDefault Pageable p) {
@@ -67,14 +71,9 @@ public class PostagemController {
     @Transactional
     public Id criar(@RequestBody @Valid PostagemCreateDto data) {
 
-        int userId = data.postagem().userId();
+        int userId = userDataService.getActiveUserData();
 
-        boolean userExists = userRepository.existsById(userId);
-        if (!userExists) {
-            // throw new NotFoundException("ID de usuário inválido");
-        }
-
-        Postagem postagem = new Postagem(data.postagem());
+        Postagem postagem = new Postagem(data.postagem(), userId);
 
         Postagem savedPostagem = repository.save(postagem); // Salva a postagem e obtém a instância salva com o ID
 

@@ -19,7 +19,6 @@ public record UserDto(
         String email,
         @NotBlank
         String senha,
-        @NotNull
         int score,
         @Valid
         @NotNull
