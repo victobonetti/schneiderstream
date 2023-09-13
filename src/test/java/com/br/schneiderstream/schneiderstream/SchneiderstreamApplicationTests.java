@@ -9,6 +9,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.br.schneiderstream.schneiderstream.entities.Id;
+import com.br.schneiderstream.schneiderstream.entities.auth.AuthDto;
 import com.br.schneiderstream.schneiderstream.entities.postagemImagem.PostagemImagem;
 import com.br.schneiderstream.schneiderstream.entities.postagemLike.PostagemLikeDto;
 import com.br.schneiderstream.schneiderstream.entities.postagens.classes.Postagem;
@@ -51,7 +52,7 @@ class SchneiderstreamApplicationTests {
 		User user = new User();
 		user.setCargo("Desbravador Ecológico");
 		user.setDescricao("Amante da natureza e defensor do ambiente.");
-		user.setEmail("ecoexplorer@example.com");
+		user.setEmail("lixa3sexplorer@example.com");
 		user.setFoto("https://example.com/eco-explorer.jpg");
 		user.setIdade(28);
 		user.setNome("Eco Explorer");
@@ -108,9 +109,37 @@ class SchneiderstreamApplicationTests {
 		return deserializeId(resultado);
 	}
 
+	public String getAuthenticationToken() throws JsonProcessingException, Exception {
+
+		return m.perform(post("/login")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper
+				.writeValueAsString(new AuthDto(returnTestUser().getEmail(), returnTestUser().getSenha()))))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$.token").isNotEmpty())
+				.andReturn()
+				.getResponse()
+				.getContentAsString();
+
+	}
+
+	@Test
+	void testCreateUser() throws Exception {
+
+		int id = criaUsuarioERetornaId();
+
+		m.perform(get("/users/find")
+
+				.param("id", String.valueOf(id)))
+				.andExpect(status().isCreated())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$.id").value(id));
+	}
+
 	@Test
 	void testGetUsers() throws Exception {
-		MvcResult result = m.perform(get("/users"))
+		MvcResult result = m.perform(get("/users").header("Authorization", "Bearer " + getAuthenticationToken()))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andReturn();
@@ -125,22 +154,10 @@ class SchneiderstreamApplicationTests {
 	};
 
 	@Test
-	void testCreateUser() throws Exception {
-
-		int id = criaUsuarioERetornaId();
-
-		m.perform(get("/users/find")
-				.param("id", String.valueOf(id)))
-				.andExpect(status().isOk())
-				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(jsonPath("$.id").value(id));
-	}
-
-	@Test
 	void testCreatePost() throws Exception {
 		int userId = criaUsuarioERetornaId();
 		int postId = criaPostagemERetornaId(userId);
-		m.perform(get("/postagens/find").param("id", String.valueOf(postId)))
+		m.perform(get("/postagens/find").header("Authorization", "Bearer " + getAuthenticationToken()).param("id", String.valueOf(postId)))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.id").value(postId));
 	}
@@ -154,11 +171,12 @@ class SchneiderstreamApplicationTests {
 		PostagemLikeDto like = new PostagemLikeDto(user2Id, postId);
 
 		m.perform(post("/postagens/likes")
+		.header("Authorization", "Bearer " + getAuthenticationToken())
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(like)))
 				.andExpect(status().isOk());
 
-		m.perform(get("/postagens/likes").param("id", String.valueOf(postId)))
+		m.perform(get("/postagens/likes").header("Authorization", "Bearer " + getAuthenticationToken()).param("id", String.valueOf(postId)))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.totalLikes")
 						.value(1));
@@ -173,16 +191,16 @@ class SchneiderstreamApplicationTests {
 		PostagemLikeDto like = new PostagemLikeDto(user2Id, postId);
 
 		// Primeira criação do like
-		m.perform(post("/postagens/likes")
+		m.perform(post("/postagens/likes").header("Authorization", "Bearer " + getAuthenticationToken())
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(like)))
 				.andExpect(status().isOk());
 
 		// Tentativa de criar o like novamente para o mesmo usuário e postagem
-		m.perform(post("/postagens/likes")
+		m.perform(post("/postagens/likes").header("Authorization", "Bearer " + getAuthenticationToken())
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(like)))
-				.andExpect(status().isNotFound()); 
+				.andExpect(status().isNotFound());
 	}
 
 	@Test
@@ -192,24 +210,25 @@ class SchneiderstreamApplicationTests {
 
 		// Criação do like
 		PostagemLikeDto like = new PostagemLikeDto(user1Id, postId);
-		m.perform(post("/postagens/likes")
+		m.perform(post("/postagens/likes").header("Authorization", "Bearer " + getAuthenticationToken())
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(like)))
 				.andExpect(status().isOk());
 
 		// Verificação do total de likes após a remoção
-		m.perform(get("/postagens/likes").param("id", String.valueOf(postId)))
+		m.perform(get("/postagens/likes").header("Authorization", "Bearer " + getAuthenticationToken()).param("id", String.valueOf(postId)))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.totalLikes").value(1));
 
 		// Remoção do like
 		m.perform(delete("/postagens/likes")
+		.header("Authorization", "Bearer " + getAuthenticationToken())
 				.param("userId", String.valueOf(user1Id))
 				.param("postId", String.valueOf(postId)))
 				.andExpect(status().isOk());
 
 		// Verificação do total de likes após a remoção
-		m.perform(get("/postagens/likes").param("id", String.valueOf(postId)))
+		m.perform(get("/postagens/likes").header("Authorization", "Bearer " + getAuthenticationToken()).param("id", String.valueOf(postId)))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.totalLikes").value(0));
 	}
