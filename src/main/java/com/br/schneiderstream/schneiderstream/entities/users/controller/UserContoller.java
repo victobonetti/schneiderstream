@@ -3,6 +3,7 @@ package com.br.schneiderstream.schneiderstream.entities.users.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +24,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/users")
+// @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class UserContoller {
 
     // identifica o repository
@@ -45,9 +47,11 @@ public class UserContoller {
         return ResponseEntity.ok(user);
     }
 
+    @CrossOrigin(origins = "http://localhost:5173")
     @Transactional
     @PostMapping
     public ResponseEntity<Id> cadastro(@RequestBody @Valid UserDto json, UriComponentsBuilder ub) {
+        System.out.println("Cadastro acessado.");
         if (!repository.existsByEmail(json.email())) {
             User newUser = repository.save(new User(json));
             Id id = new Id(newUser.getId());

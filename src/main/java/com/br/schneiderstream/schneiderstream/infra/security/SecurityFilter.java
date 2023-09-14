@@ -31,15 +31,18 @@ public class SecurityFilter extends OncePerRequestFilter {
         if (tkn != null) {
             var subject = service.getSubject(tkn);
             var usuario = repository.findByEmail(subject);
-            var authentication = new UsernamePasswordAuthenticationToken(usuario.getUsername(), null, usuario.getAuthorities());
+            var authentication = new UsernamePasswordAuthenticationToken(usuario.getUsername(), null,
+                    usuario.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
+        // response.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
         filterChain.doFilter(request, response);
-    } 
+    }
 
     private String getToken(HttpServletRequest request) {
         var tkn = request.getHeader("Authorization");
-        if (tkn == null) {
+        System.out.println("token_len: " + tkn.length() + ", token: '" + tkn +"'");
+        if (tkn == null || tkn.contains("undefined")) {
             return null;
         } else {
             return tkn.replace("Bearer ", "").trim();
