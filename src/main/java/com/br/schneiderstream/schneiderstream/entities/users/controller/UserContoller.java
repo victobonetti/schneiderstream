@@ -1,6 +1,8 @@
 package com.br.schneiderstream.schneiderstream.entities.users.controller;
 
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,6 +18,8 @@ import com.br.schneiderstream.schneiderstream.entities.users.classes.User;
 import com.br.schneiderstream.schneiderstream.entities.users.dto.UserDto;
 import com.br.schneiderstream.schneiderstream.entities.users.dto.UserListDto;
 import com.br.schneiderstream.schneiderstream.entities.users.repository.UserRepository;
+import com.br.schneiderstream.schneiderstream.infra.security.TokenService;
+
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +35,9 @@ public class UserContoller {
     @Autowired
     private UserRepository repository;
 
+    @Autowired 
+    private TokenService tokenService;
+
     @GetMapping
     public ResponseEntity<Page<UserListDto>> listar(@PageableDefault(size = 10, sort = { "nome" }) Pageable p) {
         Page<UserListDto> page = repository.findAll(p).map(UserListDto::new);
@@ -45,6 +52,12 @@ public class UserContoller {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/find")
+    public User encontraUsuarioPorToken(@RequestBody String tkn){
+        Optional<User> result = repository.findById(repository.getIdByEmail(tokenService.getSubject(tkn)));
+        return result.get();
     }
 
     @CrossOrigin(origins = "http://localhost:5173")

@@ -58,14 +58,20 @@ public class PostagemLikeController {
     @PostMapping
     @Transactional
     public void darLike(@RequestBody PostagemLikeCreateDto postId) {
-
+        System.out.println("Like!");
         var userId = userDataService.getActiveUserData();
         
         boolean postExists = postagemRepository.existsById(postId.postagemId());
         boolean userHaventLiked = !repository.existsByPostagemIdAndUserId(postId.postagemId(), userId);
         boolean userExists = userRepository.existsById(userId);
 
+        System.out.println(postId.postagemId());
+        System.out.println(postExists);
+        System.out.println(userHaventLiked);
+
+
         if (userExists && postExists && userHaventLiked) {
+            System.out.println("Safe!");
             repository.save(new PostagemLike(postId, userId));
         }
     }

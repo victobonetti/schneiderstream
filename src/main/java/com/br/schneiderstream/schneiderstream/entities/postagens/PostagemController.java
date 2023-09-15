@@ -45,6 +45,7 @@ public class PostagemController {
 
     @GetMapping
     public Page<PostagemListDto> listar(@PageableDefault Pageable p) {
+        System.out.println("Get posts...");
         Page<PostagemListDto> page = repository.findAll(p).map(postagem -> {
             // encontrar imagem da postagem
             PostagemImagem imagem = imageRepository.findByPostId(postagem.getId()).orElse(null);

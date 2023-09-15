@@ -21,6 +21,7 @@ public class ActiveUserService {
         }
     }
 
+
     public int getActiveUserData() {
         String email = getActiveUserDataEmail();
         return userRepository.getIdByEmail(email);

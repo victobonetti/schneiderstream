@@ -35,13 +35,11 @@ public class SecurityFilter extends OncePerRequestFilter {
                     usuario.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-        // response.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
         filterChain.doFilter(request, response);
     }
 
     private String getToken(HttpServletRequest request) {
         var tkn = request.getHeader("Authorization");
-        System.out.println("token_len: " + tkn.length() + ", token: '" + tkn +"'");
         if (tkn == null || tkn.contains("undefined")) {
             return null;
         } else {

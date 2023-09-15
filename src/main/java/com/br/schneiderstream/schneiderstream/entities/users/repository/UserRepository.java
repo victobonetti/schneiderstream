@@ -14,4 +14,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     // Correção da consulta SQL
     @Query(value = "SELECT id FROM users WHERE email = :email", nativeQuery = true)
     int getIdByEmail(@Param("email") String email);
+
 }

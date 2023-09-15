@@ -23,9 +23,9 @@ public class TokenService {
                     .verify(tkn)
                     .getSubject();
         } catch (JWTVerificationException exception) {
-            throw new RuntimeException("Erro ao resgatar subject", exception);
+            throw new RuntimeException("Erro ao resgatar subject", exception.getCause());
         }
-    }
+    } 
 
     public String gerarToken(User object) {
         try {
