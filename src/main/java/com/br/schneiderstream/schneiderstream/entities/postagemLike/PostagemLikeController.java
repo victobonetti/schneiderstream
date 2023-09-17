@@ -57,10 +57,10 @@ public class PostagemLikeController {
 
     @PostMapping
     @Transactional
-    public void darLike(@RequestBody PostagemLikeCreateDto postId) {
+    public void darLike(@RequestBody PostagemLikeCreateDto postId, @RequestBody String token) {
         System.out.println("Like!");
-        var userId = userDataService.getActiveUserData();
-        
+        var userId = userDataService.getActiveUserId(token);
+
         boolean postExists = postagemRepository.existsById(postId.postagemId());
         boolean userHaventLiked = !repository.existsByPostagemIdAndUserId(postId.postagemId(), userId);
         boolean userExists = userRepository.existsById(userId);
@@ -69,27 +69,15 @@ public class PostagemLikeController {
         System.out.println(postExists);
         System.out.println(userHaventLiked);
 
-
         if (userExists && postExists && userHaventLiked) {
-            System.out.println("Safe!");
+            System.out.println("Deu like!");
             repository.save(new PostagemLike(postId, userId));
         }
-    }
 
-    @Transactional
-    @DeleteMapping
-    public void removerLike(@RequestParam int post) {
-
-        var userId = userDataService.getActiveUserData();
-
-        boolean postExists = postagemRepository.existsById(post);
-        boolean userExists = userRepository.existsById(userId);
-        boolean userLiked = repository.existsByPostagemIdAndUserId(post, userId);
-
-        if (userExists && postExists && userLiked) {
-            repository.deleteByUserIdAndPostagemId(userId, post);
+        if (userExists && postExists && !userHaventLiked) {
+            System.out.println("Removeu like!");
+            repository.deleteByUserIdAndPostagemId(userId, postId.postagemId());
         }
-
     }
 
 }

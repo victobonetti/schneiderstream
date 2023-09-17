@@ -28,6 +28,7 @@ public class SecurityFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         var tkn = getToken(request);
+
         if (tkn != null) {
             var subject = service.getSubject(tkn);
             var usuario = repository.findByEmail(subject);
@@ -40,6 +41,8 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     private String getToken(HttpServletRequest request) {
         var tkn = request.getHeader("Authorization");
+        System.out.println("Get TOKEN!");
+        System.out.println(tkn);
         if (tkn == null || tkn.contains("undefined")) {
             return null;
         } else {

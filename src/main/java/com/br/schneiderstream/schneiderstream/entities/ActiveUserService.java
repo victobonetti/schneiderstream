@@ -3,6 +3,8 @@ import javax.management.RuntimeErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.br.schneiderstream.schneiderstream.entities.users.repository.UserRepository;
+import com.br.schneiderstream.schneiderstream.infra.security.TokenService;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -11,6 +13,9 @@ public class ActiveUserService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    TokenService service;
 
     private String getActiveUserDataEmail() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -22,9 +27,8 @@ public class ActiveUserService {
     }
 
 
-    public int getActiveUserData() {
-        String email = getActiveUserDataEmail();
-        return userRepository.getIdByEmail(email);
+    public int getActiveUserId(String tkn) {
+        return Integer.parseInt(service.getIdFromToken(tkn));
     }
 
 
