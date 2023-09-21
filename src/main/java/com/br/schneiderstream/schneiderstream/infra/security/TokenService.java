@@ -53,14 +53,14 @@ public class TokenService {
 
     }
 
-    public String gerarToken(User object) {
+    public String gerarToken(User object, String userId) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             Date expirationDate = new Date(System.currentTimeMillis() + 1 * 60 * 60 * 1000);
             String token = JWT.create()
                     .withIssuer("SCHNEIDERSTREAM")
                     .withSubject(object.getEmail())
-                    .withClaim("userId", object.getId())
+                    .withClaim("userId", userId)
                     .withExpiresAt(expirationDate)
                     .sign(algorithm);
             System.out.println("TOKEN!");

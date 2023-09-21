@@ -22,8 +22,8 @@ public class PostagemLike {
     private int postagemId;
 
     public PostagemLike(
-            PostagemLikeCreateDto postagem, int userId) {
-        this.postagemId = postagem.postagemId();
+            int postId, int userId) {
+        this.postagemId = postId;
         this.userId = userId;
     }
 }

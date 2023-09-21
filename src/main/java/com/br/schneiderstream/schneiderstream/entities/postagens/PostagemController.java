@@ -70,9 +70,9 @@ public class PostagemController {
 
     @PostMapping
     @Transactional
-    public Id criar(@RequestBody @Valid PostagemCreateDto data) {
+    public Id criar(@RequestBody @Valid PostagemCreateDto data, @RequestBody String tkn) {
 
-        int userId = userDataService.getActiveUserData();
+        int userId = userDataService.getActiveUserId(tkn);
 
         Postagem postagem = new Postagem(data.postagem(), userId);
 

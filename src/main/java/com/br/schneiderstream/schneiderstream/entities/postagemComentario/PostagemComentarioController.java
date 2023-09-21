@@ -51,8 +51,9 @@ public class PostagemComentarioController {
     }
 
     @PostMapping
-    public Id criarComentario(@RequestBody PostagemComentarioDto comentario) {
-        return new Id(repository.save(new PostagemComentario(comentario, userDataService.getActiveUserData())).getId());
+    public Id criarComentario(@RequestBody PostagemComentarioDto comentario, @RequestBody String tkn) {
+        int id = userDataService.getActiveUserId(tkn);
+        return new Id(repository.save(new PostagemComentario(comentario, id)).getId());
     }
 
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.br.schneiderstream.schneiderstream.entities.users.classes.User;
+import com.br.schneiderstream.schneiderstream.entities.users.repository.UserRepository;
 import com.br.schneiderstream.schneiderstream.infra.security.TokenDto;
 import com.br.schneiderstream.schneiderstream.infra.security.TokenService;
 
@@ -25,12 +26,18 @@ public class AuthController {
     @Autowired
     TokenService tkn;
 
+    @Autowired 
+    UserRepository ur;
+
     @PostMapping
     public ResponseEntity<Object> login(@RequestBody @Valid AuthDto dados) {
+
+        Integer userId = ur.getIdByEmail(dados.email());
+
         try {
             var token = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha());
             var authentication = auth.authenticate(token);
-            var tokenJWT = tkn.gerarToken((User) authentication.getPrincipal());
+            var tokenJWT = tkn.gerarToken((User) authentication.getPrincipal(), userId.toString());
             return ResponseEntity.ok().body(new TokenDto(tokenJWT));
         } catch (Exception e) {
             e.printStackTrace();

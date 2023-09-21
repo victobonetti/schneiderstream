@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -57,15 +56,17 @@ public class PostagemLikeController {
 
     @PostMapping
     @Transactional
-    public void darLike(@RequestBody PostagemLikeCreateDto postId, @RequestBody String token) {
-        System.out.println("Like!");
-        var userId = userDataService.getActiveUserId(token);
+    public void darLike(@RequestBody PostagemLikeCreateDto like) {
+        int postId = like.id(); 
+        System.out.println("Like: "+ postId);
+        System.out.println("Like: "+ like.tkn());
+        var userId = userDataService.getActiveUserId(like.tkn());
 
-        boolean postExists = postagemRepository.existsById(postId.postagemId());
-        boolean userHaventLiked = !repository.existsByPostagemIdAndUserId(postId.postagemId(), userId);
+        boolean postExists = postagemRepository.existsById(postId);
+        boolean userHaventLiked = !repository.existsByPostagemIdAndUserId(postId, userId);
         boolean userExists = userRepository.existsById(userId);
 
-        System.out.println(postId.postagemId());
+        System.out.println(postId);
         System.out.println(postExists);
         System.out.println(userHaventLiked);
 
@@ -76,7 +77,7 @@ public class PostagemLikeController {
 
         if (userExists && postExists && !userHaventLiked) {
             System.out.println("Removeu like!");
-            repository.deleteByUserIdAndPostagemId(userId, postId.postagemId());
+            repository.deleteByUserIdAndPostagemId(userId, postId);
         }
     }
 

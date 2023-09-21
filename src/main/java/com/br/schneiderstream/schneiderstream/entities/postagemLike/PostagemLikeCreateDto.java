@@ -4,11 +4,13 @@ import jakarta.validation.constraints.NotNull;
 
 public record PostagemLikeCreateDto(
     @NotNull
-    int postagemId
+    int id,
+    @NotNull
+    String tkn
 ) {
 
-    public PostagemLikeCreateDto(PostagemLike postagemLike){
-        this(postagemLike.getUserId());
+    public PostagemLikeCreateDto(PostagemLike postagemLike, String tkn){
+        this(postagemLike.getUserId(), tkn);
     }
 
 }
